@@ -22,14 +22,17 @@ stages:
       displayName: 'Use .NET Core SDK 8.x'
       inputs:
         version: '8.x'
+
     - task: DotNetCoreCLI@2
       displayName: 'Dotnet Publish'
       inputs:
         command: 'publish'
         arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api-package'
+
     - script: echo 'Artifact will be published as WeatherForecast.Api.zip'
       displayName: 'Debug Artifact Name'
-    - task: PublishBuildArtifacts@1
+
+    - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/api-package'
@@ -63,8 +66,14 @@ stages:
   - job: deploy_app_service
     displayName: 'Deploy to App Service'
     steps:
-    - download: current
-      displayName: 'Download drop Pipeline Artifact'
+#    - download: current
+#      displayName: 'Download drop Pipeline Artifact'
+
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download WeatherForecastAPI Artifact'
+      inputs:
+        artifact: 'WeatherForecastApi'
+        path: '$(Pipeline.Workspace)/WeatherForecastApi/api-package'
 
     - task: AzureRmWebAppDeployment@4
       inputs:
@@ -72,7 +81,7 @@ stages:
         azureSubscription: 'MyAzureSubscription'
         appType: 'webApp'
         WebAppName: 'ijwebappdotnet'
-        package: '$(Pipeline.Workspace)/drop/api-package/WeatherForecast.Api.zip'
+        package: '$(Pipeline.Workspace)/WeatherForecastApi/api-package/WeatherForecast.Api.zip'
 
 - stage: demo
   jobs:
