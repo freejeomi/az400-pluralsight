@@ -46,6 +46,8 @@ stages:
 
 - stage: cd
   displayName: Continuous Deployment
+  dependsOn: ci
+  condition: succeeded()
   jobs:
   - job: deploy_app_service
     displayName: 'Deploy to App Service'
