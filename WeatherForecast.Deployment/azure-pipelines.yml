@@ -1,6 +1,15 @@
 ﻿pool:
   vmImage: 'ubuntu-latest'
 
+name: "$(Rev:r)"
+variables:
+  - name: MajorMinor
+    value: '3.3'
+  - name: ProductVersion
+    ${{ if eq(variables['Build.SourceBranchName'], 'release') }}:
+      value: 'MyProduct-$(MajorMinor)'
+    ${{ else }}:
+      value: 'MyProduct-$(MajorMinor)-beta-$(Build.BuildNumber)'
 
 stages:
 - stage: ci
@@ -22,7 +31,7 @@ stages:
       displayName: 'Publish Pipeline Artifact'
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/api-package'
-        artifact: 'WeatherForecast Api'
+        artifact: 'WeatherForecastApi'
 
   - job: build_and_test
     displayName: 'Build and Test .Net 8 Application'
@@ -60,4 +69,4 @@ stages:
         azureSubscription: 'MyAzureSubscription'
         appType: 'webApp'
         WebAppName: 'ijwebappdotnet'
-        packageForLinux: '$(Pipeline.Workspace)/WeatherForecast Api/WeatherForecast.Api.zip'
+        packageForLinux: '$(Pipeline.Workspace)/drop/api-package/WeatherForecast.Api.zip'
