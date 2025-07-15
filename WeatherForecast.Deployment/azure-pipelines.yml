@@ -17,7 +17,7 @@ stages:
       displayName: 'Dotnet Publish'
       inputs:
         command: 'publish'
-        arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
+        arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api-package'
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Pipeline Artifact'
       inputs:
