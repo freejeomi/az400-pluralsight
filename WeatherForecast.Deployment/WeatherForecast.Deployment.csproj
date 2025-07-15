@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="azure-pipelines.yml" />
+    <Compile Remove="azure-pipelines.yml" />
   </ItemGroup>
 
 </Project>
