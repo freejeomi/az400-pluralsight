@@ -63,25 +63,11 @@ stages:
   dependsOn: ci
   condition: succeeded()
   jobs:
-  - job: deploy_app_service
-    displayName: 'Deploy to App Service'
-    steps:
-#    - download: current
-#      displayName: 'Download drop Pipeline Artifact'
+  - template: stage-deployment.yml
+    parameters:
+      ResourceGroupName: 'MyResourceGroup'
+      WebAppName: 'ijwebappdotnet'
 
-    - task: DownloadPipelineArtifact@2
-      displayName: 'Download WeatherForecastAPI Artifact'
-      inputs:
-        artifact: 'WeatherForecastApi'
-        path: '$(Pipeline.Workspace)/WeatherForecastApi/api-package'
-
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'MyAzureSubscription'
-        appType: 'webApp'
-        WebAppName: 'ijwebappdotnet'
-        package: '$(Pipeline.Workspace)/WeatherForecastApi/api-package/WeatherForecast.Api.zip'
 
 - stage: demo
   jobs:

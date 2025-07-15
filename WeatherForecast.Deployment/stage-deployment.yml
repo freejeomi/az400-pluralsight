@@ -1,0 +1,30 @@
+parameters:
+  - name: ResourceGroupName
+    type: string
+
+  - name: WebAppName
+    type: string
+
+jobs:
+- job: deploy_app_service
+  displayName: 'Deploy to App Service'
+  steps:
+      #    - download: current
+      #      displayName: 'Download drop Pipeline Artifact'
+
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download WeatherForecastAPI Artifact'
+        inputs:
+          artifact: 'WeatherForecastApi'
+          path: '$(Pipeline.Workspace)/WeatherForecastApi/api-package'
+
+      - task: AzureRmWebAppDeployment@4
+        inputs:
+          ConnectionType: 'AzureRM'
+          azureSubscription: 'MyAzureSubscription'
+          ResourceGroupName: ${{ parameters.ResourceGroupName }}
+          appType: 'webApp'
+          WebAppName: ${{ parameters.WebAppName }}
+          package: '$(Pipeline.Workspace)/WeatherForecastApi/api-package/WeatherForecast.Api.zip'
+
+
