@@ -2,7 +2,7 @@
   vmImage: 'ubuntu-latest'
 
 
-Stages:
+stages:
 - stage: ci
   displayName: Continuous Integration
   jobs:
@@ -49,7 +49,6 @@ Stages:
   jobs:
   - job: deploy_app_service
     displayName: 'Deploy to App Service'
-    dependsOn: build_and_test
     steps:
     - download: current
       artifact: WeatherForecast Api
