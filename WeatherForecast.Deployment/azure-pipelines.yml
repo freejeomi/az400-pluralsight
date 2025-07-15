@@ -75,7 +75,7 @@ stages:
         azureSubscription: 'MyAzureSubscription'
         appType: 'webApp'
         WebAppName: 'ijwebappdotnet'
-        package: '$(Pipeline.Workspace)/WeatherForecast/api-package/WeatherForecast.Api.zip'
+        package: '$(Pipeline.Workspace)/WeatherForecastApi/api-package/WeatherForecast.Api.zip'
 
 - stage: demo
   jobs:
