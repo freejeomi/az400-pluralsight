@@ -4,4 +4,40 @@
 
 jobs:
 - job: publish_artifact
-  displayName: 'P'
+  displayName: 'Package Weather Forecast API'
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK 8.x'
+    inputs:
+      version: '8.x'
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet Publish'
+    inputs:
+      command: 'publish'
+      arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/api-package'
+      artifact: 'WeatherForecast Api'
+
+- job: build_and_test
+  displayName: 'Build and Test .Net 8 Application'
+  dependsOn: publish_artifact
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK 8.x'
+    inputs:
+      version: '8.x'
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet build'
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(configuration)'
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet Test'
+    inputs:
+      command: test
+      projects: '**/*.UnitTest.csproj'
+      arguments: '--configuration $(configuration)'
+
