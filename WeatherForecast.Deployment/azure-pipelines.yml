@@ -27,6 +27,9 @@ stages:
       inputs:
         command: 'publish'
         arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api-package'
+    - script:
+        echo "Artifact will be published as: WeatherForecast.Api.zip"
+        displayName: 'Debug Artifact Name'
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Pipeline Artifact'
       inputs:
