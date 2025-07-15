@@ -65,13 +65,16 @@ stages:
     steps:
     - download: current
       artifact: WeatherForecastApi
+      patterns: '**'
+      displayName: 'Download WeatherForecastApi Artifact'
+      path: '$(Pipeline.Workspace)/WeatherForecastApi'
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'MyAzureSubscription'
         appType: 'webApp'
         WebAppName: 'ijwebappdotnet'
-        packageForLinux: '$(Pipeline.Workspace)/drop/api-package/WeatherForecast.Api.zip'
+        package: '$(Pipeline.Workspace)/WeatherForecast/api-package/WeatherForecast.Api.zip'
 
 - stage: demo
   jobs:
