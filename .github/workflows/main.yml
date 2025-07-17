@@ -2,7 +2,7 @@ name: Build Weather Forecast API
 
 on:
   push:
-    branches: ['main']
+    branches: ['master']
 
 jobs:
   Build:
