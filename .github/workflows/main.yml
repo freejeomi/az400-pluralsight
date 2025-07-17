@@ -1,0 +1,5 @@
+name: build_weather_forecast_api
+
+on:
+  push:
+    branches: ['main']
