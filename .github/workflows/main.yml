@@ -36,3 +36,21 @@ jobs:
         with:
           name: ZipDeployFile
           path: api-package.zip
+
+  Deploy:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        name: ZipDeployFile
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'ijwebappdotnet'
+          package: 'ZipDeployFile/api-package.zip'
