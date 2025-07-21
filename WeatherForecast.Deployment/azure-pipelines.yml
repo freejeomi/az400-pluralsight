@@ -49,6 +49,7 @@ stages:
       displayName: 'Publish Coverage to ADO'
       inputs:
         summaryFileLocation: '**/*coverage.cobertura.xml'
+        codeCoverageTool: 'cobertura'
 
     - task: DotNetCoreCLI@2
       displayName: 'Dotnet Publish'
