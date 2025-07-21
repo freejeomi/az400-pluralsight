@@ -15,8 +15,8 @@ stages:
 - stage: ci
   displayName: Continuous Integration
   jobs:
-  - job: build
-    displayName: 'Build and Publish Weather Forecast API'
+  - job: publish_artifact
+    displayName: 'Package Weather Forecast API'
     steps:
     - task: UseDotNet@2
       displayName: 'Use .NET Core SDK 8.x'
@@ -24,35 +24,11 @@ stages:
         version: '8.x'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Compile the applicatioh'
-      inputs:
-        projects: '**/*.csproj'
-        arguments: '--configuration $(configuration)'
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Run unit tests'
-      inputs:
-        command: test
-        projects: '**/*.UnitTest.csproj'
-        arguments: '--configuration $(configuration)'
-    - task: DotNetCoreCLI@2
-      displayName: 'Run integration tests'
-      inputs:
-        command: test
-        projects: '**/*.IntegrationTest.csproj'
-        publishTestResults: true
-        arguments: '--configuration $(configuration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-
-    - task: PublishCodeCoverageResults@2
-      displayName: 'Publish Coverage to ADO'
-      inputs:
-        summaryFileLocation: '**/*coverage.cobertura.xml'
-
-    - task: DotNetCoreCLI@2
       displayName: 'Dotnet Publish'
       inputs:
-        command: publish
-        arguments: '--output $(Build.ArtifactStagingDirectory)/api-package --configuration $(configuration)'
+        command: 'publish'
+        arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api-package'
+
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
@@ -60,7 +36,25 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/api-package'
         artifact: 'WeatherForecastApi'
 
-
+  - job: build_and_test
+    displayName: 'Build and Test .Net 8 Application'
+    dependsOn: publish_artifact
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core SDK 8.x'
+      inputs:
+        version: '8.x'
+    - task: DotNetCoreCLI@2
+      displayName: 'Dotnet build'
+      inputs:
+        projects: '**/*.csproj'
+        arguments: '--configuration $(configuration)'
+    - task: DotNetCoreCLI@2
+      displayName: 'Dotnet Test'
+      inputs:
+        command: test
+        projects: '**/*.UnitTest.csproj'
+        arguments: '--configuration $(configuration)'
 
 - stage: cd
   displayName: Continuous Deployment
