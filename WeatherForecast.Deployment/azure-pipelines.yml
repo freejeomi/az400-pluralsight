@@ -33,7 +33,7 @@ stages:
       displayName: 'Run unit tests'
       inputs:
         command: test
-        projects: '**/*.UnitTest.csproj'
+        projects: '**/*.UnitTests.csproj'
         arguments: '--configuration $(configuration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
         publishTestResults: true
 
@@ -41,7 +41,7 @@ stages:
       displayName: 'Run integration tests'
       inputs:
         command: test
-        projects: '**/*.IntegrationTest.csproj'
+        projects: '**/*.IntegrationTests.csproj'
         publishTestResults: true
         arguments: '--configuration $(configuration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
