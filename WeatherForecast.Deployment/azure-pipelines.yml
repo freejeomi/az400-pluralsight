@@ -24,7 +24,7 @@ stages:
         version: '8.x'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Compile the applicatioh'
+      displayName: 'Compile the application'
       inputs:
         projects: '**/*.csproj'
         arguments: '--configuration $(configuration)'
@@ -34,7 +34,9 @@ stages:
       inputs:
         command: test
         projects: '**/*.UnitTest.csproj'
-        arguments: '--configuration $(configuration)'
+        arguments: '--configuration $(configuration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+        publishTestResults: true
+
     - task: DotNetCoreCLI@2
       displayName: 'Run integration tests'
       inputs:
