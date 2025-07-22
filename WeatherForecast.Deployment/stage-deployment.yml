@@ -23,7 +23,7 @@ jobs:
           ConnectionType: 'AzureRM'
           azureSubscription: 'MyAzureSubscription'
           ResourceGroupName: ${{ parameters.ResourceGroupName }}
-          appType: 'webApp'
+          appType: 'webAppLinux'
           WebAppName: ${{ parameters.WebAppName }}
           package: '$(Pipeline.Workspace)/WeatherForecastApi/api-package/WeatherForecast.Api.zip'
 

@@ -49,8 +49,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App Prod
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'ijwebappdotnet'
+          app-name: 'ijwebappdotnet-prod'
           package: 'ZipDeployFile/api-package.zip'

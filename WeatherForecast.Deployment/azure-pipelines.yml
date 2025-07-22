@@ -64,16 +64,27 @@ stages:
         artifact: 'WeatherForecastApi'
 
 
-
-- stage: cd
-  displayName: Continuous Deployment
+# deploy to test environment
+- stage: cd_test
+  displayName: Continuous Deployment to Test
   dependsOn: ci
   condition: succeeded()
   jobs:
   - template: stage-deployment.yml
     parameters:
-      ResourceGroupName: 'MyResourceGroup'
-      WebAppName: 'ijwebappdotnet'
+      ResourceGroupName: 'az400learning'
+      WebAppName: 'ijwebappdotnet-test'
+
+#   deploy to production environment
+- stage: cd_prod
+  displayName: Continuous Deployment to Production
+  dependsOn: ci
+  condition: succeeded()
+  jobs:
+    - template: stage-deployment.yml
+      parameters:
+        ResourceGroupName: 'az400learning'
+        WebAppName: 'ijwebappdotnet-prod'
 
 # just to test build number ID
 #- stage: demo
