@@ -1,6 +1,17 @@
 ﻿pool:
   vmImage: 'ubuntu-latest'
 
+trigger:
+    branches:
+        include:
+        - master
+
+pr:
+    branches:
+        include:
+        - master
+
+
 name: "$(Rev:.rrr)"
 variables:
 
@@ -13,10 +24,10 @@ variables:
 
 
   - name: ClientPackageVersion
-    ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
       value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)'
-    ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
-      value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)-prerelease$(Build.BuildNumber)'
+    ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
+      value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)-prerelease.build$(Rev:.rrr)'
 
 
 stages:
