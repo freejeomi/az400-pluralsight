@@ -1,17 +1,23 @@
 ﻿pool:
   vmImage: 'ubuntu-latest'
 
-name: "$(Rev:r)"
+name: "$(Rev:.rrr)"
 variables:
+
+  - name: MajorVersion
+    value: '3'
+  - name: MinorVersion
+    value: '1'
+  - name: PatchVersion
+    value: '0'
+
+
   - name: ClientPackageVersion
-    value: '1.0.0'
-  - name: MajorMinor
-    value: '3.3'
-  - name: ProductVersion
-    ${{ if eq(variables['Build.SourceBranchName'], 'release') }}:
-      value: 'MyProduct-$(MajorMinor)'
-    ${{ else }}:
-      value: 'MyProduct-$(MajorMinor)-beta-$(Build.BuildNumber)'
+    ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+      value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)'
+    ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
+      value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)-prerelease+$(Build.BuildNumber)'
+
 
 stages:
 - stage: ci
