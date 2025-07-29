@@ -36,21 +36,38 @@ jobs:
         with:
           name: ZipDeployFile
           path: api-package.zip
+# packaging client files now
+      - name: Pack Nugget Client Package
+        run: dotnet pack WeatherForecast.Client/WeatherForecast.Client.csproj --configuration Release --output packages -p:Version=1.2.3
 
-  Deploy:
-    needs: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        name: ZipDeployFile
+      # packaging files now
+      - name: Pack Nugget API Dto Package
+        run: dotnet pack WeatherForecast.Api.Dto/WeatherForecast.Api.Dto.csproj --configuration Release --output packages -p:Version=1.2.3
 
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+# publish nuget package
+      - name: Publish Nuget Client Package
+        run: dotnet nuget push packages/WeatherForecast.Client*.nupkg --source 'https://nuget.pkg.github.com/freejeomi/index.json' --api-key ${{ secrets.GIT_API_TOKEN }}
 
-      - name: Deploy to Azure Web App Prod
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'ijwebappdotnet-prod'
-          package: 'ZipDeployFile/api-package.zip'
+      # publish nuget package
+      - name: Publish Nuget Client Package
+        run: dotnet nuget push packages/WeatherForecast.Api.Dto*.nupkg --source 'https://nuget.pkg.github.com/freejeomi/index.json' --api-key ${{ secrets.GIT_API_TOKEN }}
+
+
+# will deploy later
+#  Deploy:
+#    needs: Build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/download-artifact@v4
+#        name: ZipDeployFile
+#
+#      - name: Login to Azure
+#        uses: azure/login@v1
+#        with:
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#
+#      - name: Deploy to Azure Web App Prod
+#        uses: azure/webapps-deploy@v2
+#        with:
+#          app-name: 'ijwebappdotnet-prod'
+#          package: 'ZipDeployFile/api-package.zip'

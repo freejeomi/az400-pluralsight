@@ -18,7 +18,7 @@ variables:
   - name: MajorVersion
     value: '4'
   - name: MinorVersion
-    value: '1'
+    value: '2'
   - name: PatchVersion
     value: '0'
 
@@ -112,6 +112,7 @@ stages:
         command: push
         packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/WeatherForecast.Client*.nupkg'
         publishVstsFeed: 'az400proj1/weatherforecast-api-package'
+        allowPackageConflicts: true
 
       # publish the Nuget dto packages to feed
     - task: DotnetCoreCLI@2
@@ -120,6 +121,7 @@ stages:
         command: push
         packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/WeatherForecast.Api.Dto*.nupkg'
         publishVstsFeed: 'az400proj1/weatherforecast-api-package'
+        allowPackageConflicts: true
 
 ## deploy to test environment
 #- stage: cd_test
