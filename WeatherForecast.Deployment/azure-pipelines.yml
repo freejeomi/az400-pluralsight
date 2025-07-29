@@ -24,9 +24,9 @@ variables:
 
 
   - name: ClientPackageVersion
-    ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
       value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)'
-    ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
+    ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
       value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)-prerelease.build$(Rev:.rrr)'
 
 
