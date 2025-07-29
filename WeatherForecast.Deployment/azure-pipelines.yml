@@ -3,6 +3,8 @@
 
 name: "$(Rev:r)"
 variables:
+  - name: ClientPackageVersion
+    value: '1.0.0'
   - name: MajorMinor
     value: '3.3'
   - name: ProductVersion
@@ -63,6 +65,44 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/api-package'
         artifact: 'WeatherForecastApi'
 
+# build and publish Nuget package for the client
+    - task: DotnetCoreCLI@2
+      displayName: 'Build Nuget Package Client'
+      inputs:
+        command: pack
+        packagesToPack: '$(Build.SourcesDirectory)/WeatherForecast.Client/WeatherForecast.Client.csproj'
+        configuration: 'Release'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'ClientPackageVersion'
+
+
+# build and publish Nuget package for the dto
+    - task: DotnetCoreCLI@2
+      displayName: 'Build Nuget Package DTO'
+      inputs:
+        command: pack
+        packagesToPack: '$(Build.SourcesDirectory)/WeatherForecast.Api.dto/WeatherForecast.Api.dto.csproj'
+        configuration: 'Release'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'ClientPackageVersion'
+
+# publish the Nuget client packages to feed
+    - task: DotnetCoreCLI@2
+      displayName: 'Publish Nuget Packages Client'
+      inputs:
+        command: push
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/WeatherForecast.Client*.nupkg'
+        publishVstsFeed: 'az400proj1/weatherforecast-api-package'
+
+      # publish the Nuget dto packages to feed
+    - task: DotnetCoreCLI@2
+      displayName: 'Publish Nuget Packages DTO'
+      inputs:
+        command: push
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/WeatherForecast.API.Dto*.nupkg'
+        publishVstsFeed: 'az400proj1/weatherforecast-api-package'
 
 # deploy to test environment
 - stage: cd_test
