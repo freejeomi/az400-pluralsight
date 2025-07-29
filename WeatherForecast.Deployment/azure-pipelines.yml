@@ -16,9 +16,9 @@ name: "$(Rev:.rrr)"
 variables:
 
   - name: MajorVersion
-    value: '3'
+    value: '4'
   - name: MinorVersion
-    value: '2'
+    value: '1'
   - name: PatchVersion
     value: '0'
 
