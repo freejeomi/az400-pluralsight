@@ -82,7 +82,7 @@ stages:
       displayName: 'Build Nuget Package DTO'
       inputs:
         command: pack
-        packagesToPack: '$(Build.SourcesDirectory)/WeatherForecast.Api.dto/WeatherForecast.Api.dto.csproj'
+        packagesToPack: '$(Build.SourcesDirectory)/WeatherForecast.Api.Dto/WeatherForecast.Api.Dto.csproj'
         configuration: 'Release'
         packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
         versioningScheme: 'byEnvVar'
@@ -101,7 +101,7 @@ stages:
       displayName: 'Publish Nuget Packages DTO'
       inputs:
         command: push
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/WeatherForecast.API.Dto*.nupkg'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/WeatherForecast.Api.Dto*.nupkg'
         publishVstsFeed: 'az400proj1/weatherforecast-api-package'
 
 # deploy to test environment
