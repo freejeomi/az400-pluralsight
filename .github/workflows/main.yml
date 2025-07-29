@@ -46,11 +46,11 @@ jobs:
 
 # publish nuget package
       - name: Publish Nuget Client Package
-        run: dotnet nuget push packages/WeatherForecast.Client*.nupkg --source 'https://nuget.pkg.github.com/freejeomi/index.json' --api-key ${{ secrets.GIT_PAT_TOKEN }}
+        run: dotnet nuget push packages/WeatherForecast.Client*.nupkg --source 'https://nuget.pkg.github.com/freejeomi/index.json' --api-key ${{ secrets.GH_PAT_TOKEN }}
 
       # publish nuget package
       - name: Publish Nuget Client Package
-        run: dotnet nuget push packages/WeatherForecast.Api.Dto*.nupkg --source 'https://nuget.pkg.github.com/freejeomi/index.json' --api-key ${{ secrets.GIT_PAT_TOKEN }}
+        run: dotnet nuget push packages/WeatherForecast.Api.Dto*.nupkg --source 'https://nuget.pkg.github.com/freejeomi/index.json' --api-key ${{ secrets.GH_PAT_TOKEN }}
 
 
 # will deploy later
