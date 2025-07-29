@@ -16,7 +16,7 @@ variables:
     ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
       value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)'
     ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
-      value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)-prerelease+$(Build.BuildNumber)'
+      value: '$(MajorVersion).$(MinorVersion).$(PatchVersion)-prerelease.$(Build.BuildNumber)'
 
 
 stages:
